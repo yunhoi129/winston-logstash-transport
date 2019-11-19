@@ -82,9 +82,13 @@ class LogstashTransport extends Transport {
       } catch (err) {
         msg = util.inspect(info.message, { depth: null });
       }
-
+      let countObj = {};
+      if (info.count) {
+        countObj = info.count;
+      }
       const output = {
-        timestamp: new Date().toISOString(),
+        ...countObj,
+        timestamp: info.timestamp,
         message: msg,
         level: info.level,
         label: this.label,
