@@ -40,12 +40,16 @@ class LogstashTransport extends Transport {
     this.silent = options.silent;
     // Assign all options to local properties
     __.forEach(options, (value, key) => {
-      this[key] = value;
+      this[ key ] = value;
     });
     this.name = 'logstashTransport';
 
-    if (this.mode === 'tcp') { this.mode = 'tcp4'; }
-    if (this.mode === 'udp') { this.mode = 'udp4'; }
+    if (this.mode === 'tcp') {
+      this.mode = 'tcp4';
+    }
+    if (this.mode === 'udp') {
+      this.mode = 'udp4';
+    }
     if (this.mode.substr(3, 4) === '6' && this.host === '127.0.0.1') {
       this.host = '::0';
     }
@@ -86,6 +90,7 @@ class LogstashTransport extends Transport {
         label: this.label,
         application: this.applicationName,
         serverName: this.localhost,
+        stack: info.stack ? info.stack : '',
         pid: this.pid
       };
 
@@ -117,13 +122,15 @@ class LogstashTransport extends Transport {
   }
 
   deliverTCP(message, callback) {
-    callback = callback || (() => {});
+    callback = callback || (() => {
+    });
 
     this.socket.write(message, undefined, callback);
   }
 
   deliverUDP(message, callback) {
-    callback = callback || (() => {});
+    callback = callback || (() => {
+    });
 
     const buff = Buffer.from(message);
 
